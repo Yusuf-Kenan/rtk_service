@@ -29,16 +29,28 @@ export default function Header() {
 
         <nav className="d-inline-flex mt-2 mt-md-0 ms-md-auto">
           <Link
-            className="me-3 py-2 link-body-emphasis text-decoration-none"
-            to="/category/test"
+            className="btn btn-primary me-3 py-2 link-body-emphasis text-decoration-none"
+            to="category/test"
           >
             Categories
           </Link>
           <Link
-            className="me-3 py-2 link-body-emphasis text-decoration-none"
-            to="/blogs"
+            className="btn btn-primary me-3 py-2 link-body-emphasis text-decoration-none"
+            to="blogs"
           >
             Blogs
+          </Link>
+          <Link
+            className="btn btn-primary me-3 py-2 link-body-emphasis text-decoration-none"
+            to="auth/login"
+          >
+            Login
+          </Link>
+          <Link
+            className="btn btn-primary me-3 py-2 link-body-emphasis text-decoration-none"
+            to="auth/register"
+          >
+            Register
           </Link>
         </nav>
       </div>
