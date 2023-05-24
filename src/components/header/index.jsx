@@ -1,6 +1,51 @@
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { Badge, Button } from "react-bootstrap";
+import { useContext } from "react";
+import { AuthTokenContext } from "../../context/auth-token-context-provider/index";
+import { removeUserData } from "../../redux/userSlice";
+import useSwal from "../../hooks/useSwal";
 
 export default function Header() {
+  const navigate=useNavigate()
+  const swal = useSwal();
+  const userState = useSelector((state) => state.userState);
+  const authTokenContextValue = useContext(AuthTokenContext);
+  const dispatch = useDispatch();
+
+  const logOutUser = () => {
+    localStorage.removeItem("token");
+    authTokenContextValue.setAuthToken(null);
+    dispatch(removeUserData());
+  };
+
+  const onClickLogOut = () => {
+    // const result = confirm("Are you sure");
+    // if (result) {
+    //   logOutUser()
+    // } else {
+    //   alert("It is cancelled");
+    // }
+
+    swal
+      .fire({
+        title: "Are you sure?",
+        text: "You won't be able to use the page utilities",
+        icon: "warning",
+        showCancelButton: true,
+        confirmButtonColor: "#3085d6",
+        cancelButtonColor: "#d33",
+        confirmButtonText: "Yes!",
+      })
+      .then((result) => {
+        if (result.isConfirmed) {
+          swal.fire("Logged out!", "You're out now.", "success");
+          logOutUser();
+          navigate("/");
+        }
+      });
+      
+  };
   return (
     <header>
       <div className="d-flex flex-column flex-md-row align-items-center pb-3 mb-4 border-bottom">
@@ -40,18 +85,38 @@ export default function Header() {
           >
             Blogs
           </Link>
-          <Link
-            className="btn btn-primary me-3 py-2 link-body-emphasis text-decoration-none"
-            to="auth/login"
-          >
-            Login
-          </Link>
-          <Link
-            className="btn btn-primary me-3 py-2 link-body-emphasis text-decoration-none"
-            to="auth/register"
-          >
-            Register
-          </Link>
+
+          {userState.userData === null ? (
+            <>
+              <Link
+                className="btn btn-primary me-3 py-2 link-body-emphasis text-decoration-none"
+                to="auth/login"
+              >
+                Login
+              </Link>
+              <Link
+                className="btn btn-primary me-3 py-2 link-body-emphasis text-decoration-none"
+                to="auth/register"
+              >
+                Register
+              </Link>
+            </>
+          ) : (
+            <>
+              <Badge className="bg-danger p-3">
+                {" "}
+                <i className="fa-regular fa-user me-2"></i>
+                {userState.userData.fullname}
+              </Badge>
+              <Button
+                onClick={onClickLogOut}
+                variant="primary"
+                className="ms-2"
+              >
+                <i className="fa-solid fa-arrow-right-from-bracket"></i> Log Out
+              </Button>
+            </>
+          )}
         </nav>
       </div>
     </header>

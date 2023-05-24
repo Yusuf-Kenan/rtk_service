@@ -1,9 +1,6 @@
 import { Link } from "react-router-dom";
 import Logo from "./logo.svg";
-import { AuthTokenContext } from '../../context/auth-token-context-provider/index';
-import { useContext } from "react";
 export default function Footer() {
-  const authTokenValue = useContext(AuthTokenContext);
 
 
   return (
@@ -12,7 +9,6 @@ export default function Footer() {
       <div className="col-12 col-md">
         <img className="mb-2" src={Logo} alt="" width="24" height="19"/>
         <small className="d-block mb-3 text-body-secondary">&copy; 2017 - 2023</small>
-        <strong className="text-danger">Token: {authTokenValue.authToken}</strong>
       </div>
       <div className="col-6 col-md">
         <h5>Features</h5>
